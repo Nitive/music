@@ -27,6 +27,7 @@
     "nib": "^1.1.0",
     "normalize-styl": "^3.0.3",
     "react": "^0.13.3",
+    "react-dropzone": "^1.2.4",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1",
     "yargs": "^3.18.0"

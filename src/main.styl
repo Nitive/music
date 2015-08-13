@@ -1,8 +1,9 @@
 @import 'normalize-styl/normalize'
 
+visualization_height = 200px
 equalizer_height = 30px
 control_panel_height = 40px
-player_height = 500px
+player_width = 500px
 
 fast = .3s
 
@@ -25,7 +26,7 @@ gradation(rule, color)
 
 .music-player
 	margin 70px auto
-	width player_height
+	width player_width
 
 	overflow hidden
 	border-radius 5px
@@ -38,7 +39,7 @@ gradation(rule, color)
 
 .visualization
 	position relative
-	height 200px
+	height visualization_height
 	background #09131d url(http://i.ytimg.com/vi/r40giRjA_yY/maxresdefault.jpg) center no-repeat
 	background-size cover
 
@@ -49,6 +50,42 @@ gradation(rule, color)
 
 		transition width fast
 		width 42%
+
+	&__select
+		cursor pointer
+		size 100%
+		background alpha(#09131d, .95)
+		opacity 0
+		transition opacity fast
+		input
+			opacity 0
+		&:hover
+			opacity 1
+		&.active
+			opacity 1
+			.visualization__outline
+				opacity 1
+
+	&__outline
+		opacity 0
+		pointer-events none
+		absolute top left
+		box-sizing border-box
+		offset = 20px
+		margin (offset / 2)
+		height visualization_height - offset
+		line-height visualization_height - offset
+		width player_width - offset
+		border-radius 5px
+		border 2px dashed #87aacb
+		text-align center
+
+
+	&__file-btn
+		size 100px 20px
+		background yellow
+		margin auto
+
 
 
 
