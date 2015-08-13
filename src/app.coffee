@@ -14,14 +14,14 @@ ControlPanel = React.createClass
 		<div className = 'control-panel'>
 			<div className = 'control-panel__play' />
 			<div className = 'control-panel__stop' />
-			<span className = 'control-panel__song-name'> Metallica - Unforgiven III </span>
+			<span className = 'control-panel__song-name'>Metallica - Unforgiven III</span>
 		</div>
 
 
 Equalizer = React.createClass
 	render: ->
 			<div className = 'equalizer'>
-				<span className = 'equalizer__normal'> Normal </span>
+				<span className = 'equalizer__normal equalizer__normal--active'> Normal </span>
 				<span className = 'equalizer__pop'> Pop </span>
 				<span className = 'equalizer__rock'> Rock </span>
 				<span className = 'equalizer__jazz'> Jazz </span>

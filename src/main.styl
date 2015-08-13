@@ -4,11 +4,22 @@ equalizer_height = 30px
 control_panel_height = 40px
 player_height = 500px
 
+fast = .3s
+
 body
 	background #30485f
 	font-weight 300
 	font-size 14px
 
+
+
+
+gradation(rule, color)
+	rule color
+	&:hover
+		rule tint(color, 2%)
+	&:active
+		rule tint(color, 4%)
 
 
 
@@ -34,15 +45,10 @@ body
 	&__line
 		absolute bottom
 		height 30px
-		border-bottom 3px solid #50e3c2
+		border-bottom 2px solid #50e3c2
+
+		transition width fast
 		width 42%
-
-
-		// &:after
-		// 	content ''
-		// 	absolute right bottom
-		// 	size 2px 10px
-		// 	background #ff7272
 
 
 
@@ -62,6 +68,7 @@ body
 		margin 5px
 
 	&__song-name
+		white-space no-wrap
 		width 400px
 		line-height control_panel_height - 10px // exclude .control-panel padding
 		float right
@@ -71,14 +78,21 @@ body
 
 
 
+$equalizer__btn
+	display inline-block
+	width 20%
+	gradation background, #121f2b
+	&--active
+		gradation background, #09131d
+
 .equalizer
 	cursor pointer
 	line-height equalizer_height
-	background #09131d
 	text-align center
+	border-top 1px solid #283d51
 
 	for btn in 'normal' 'pop' 'rock' 'jazz' 'classic'
 		&__{btn}
-			display inline-block
-			width 20%
+			@extend $equalizer__btn
+
 
