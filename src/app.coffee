@@ -66,22 +66,22 @@ Equalizer = React.createClass
 				>Normal</span>
 				<span
 					className = @active('pop')
-					onClick = {@props.setFilters.bind(null, [16,16,16,16,16,16,16,16,16,16])}
+					onClick = {@props.setFilters.bind(null, [-1.6, 4.8, 7.2, 8, 5.6, -1.11022e-15, -2.4, -2.4, -1.6, -1.6])}
 					data-eqlztype = 'pop'
 				>Pop</span>
 				<span
 					className = @active('rock')
-					onClick = {@props.setFilters.bind(null, [-16,-16,-16,-16,-16,-16,-16,-16,-16,-16])}
+					onClick = {@props.setFilters.bind(null, [8, 4.8, -5.6, -8, -3.2, 4, 8.8, 11.2, 11.2, 11.2])}
 					data-eqlztype = 'rock'
 				>Rock</span>
 				<span
-					className = @active('jazz')
-					onClick = {@props.setFilters.bind(null, [16,16,16,16,16,16,16,16,16,16])}
-					data-eqlztype = 'jazz'
-				>Jazz</span>
+					className = @active('reggae')
+					onClick = {@props.setFilters.bind(null, [-1.11022e-15, -1.11022e-15, -1.11022e-15, -5.6, -1.11022e-15, 6.4, 6.4, -1.11022e-15, -1.11022e-15, -1.11022e-15])}
+					data-eqlztype = 'reggae'
+				>Reggae</span>
 				<span
 					className = @active('classic')
-					onClick = {@props.setFilters.bind(null, [16,16,16,16,16,16,16,16,16,16])}
+					onClick = {@props.setFilters.bind(null, [-1.11022e-15, -1.11022e-15, -1.11022e-15, -1.11022e-15, -1.11022e-15, -1.11022e-15, -7.2, -7.2, -7.2, -9.6])}
 					data-eqlztype = 'classic'
 				>Classic</span>
 			</div>
