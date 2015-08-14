@@ -51,6 +51,7 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 		absolute bottom
 		height 30px
 		border-bottom 2px solid #50e3c2
+		transition width fast
 
 	&__select
 		cursor pointer
@@ -58,10 +59,11 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 		background alpha(#09131d, .95)
 		opacity 0
 		transition opacity fast
-		input
-			opacity 0
+		text-align center
 		&:hover
 			opacity 1
+			.visualization__file-btn
+				opacity 1
 		&.active
 			opacity 1
 			.visualization__outline
@@ -83,10 +85,27 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 
 
 	&__file-btn
-		size 100px 20px
-		background yellow
-		margin auto
+		margin-top 82px
+		display inline-block
+		padding 10px 15px 8px
+		transition opacity fast
+		opacity 0
 
+		transition background fast
+		gradation background alpha(#283d51, .6) // dark = false, hover = 2%, active = 4%)
+		font-size 1.2em
+		border-radius 5px
+		box-shadow 0 0 15px 5px alpha(#09131d, .5)
+
+		&:after
+			content 'Or drag and drop it to here'
+			absolute top 120px left
+			width player_width
+
+			pointer-events none
+			text-align center
+			font-size .8em
+			color shade(#87aacb, 40%)
 
 
 
@@ -125,6 +144,7 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 $equalizer__btn
 	display inline-block
 	width 20%
+	transition background fast
 	gradation background, #121f2b
 	&--active
 		gradation background, #09131d

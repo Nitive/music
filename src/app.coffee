@@ -17,8 +17,8 @@ FileZone = React.createClass
 				onDrop = @onDrop
 				multiple = no>
 			<audio id = 'audioFile' />
-			<div className = 'visualization__file-btn'>Выбрать файл</div>
-			<div className = 'visualization__outline'>Отпустите файл</div>
+			<span className = 'visualization__file-btn'>Choose file</span>
+			<div className = 'visualization__outline'>Drop file to here</div>
 		</Dropzone>
 
 Visualization = React.createClass
@@ -158,6 +158,7 @@ MusicPlayer = React.createClass
 	updateProgress: ->
 		if audioFile.duration
 			if audioFile.currentTime is audioFile.duration
+				do @stop
 				do @clearTimer
 			@setState completed: audioFile.currentTime / audioFile.duration * 100
 
