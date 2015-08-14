@@ -15,12 +15,16 @@ body
 
 
 
-gradation(rule, color)
+gradation(rule, color, dark = false, hover = 2%, active = 4%)
+	func = tint
+	if dark
+		func = shade
+
 	rule color
 	&:hover
-		rule tint(color, 2%)
+		rule func(color, hover)
 	&:active
-		rule tint(color, 4%)
+		rule func(color, active)
 
 
 
@@ -47,9 +51,6 @@ gradation(rule, color)
 		absolute bottom
 		height 30px
 		border-bottom 2px solid #50e3c2
-
-		transition width fast
-		width 42%
 
 	&__select
 		cursor pointer
@@ -96,13 +97,19 @@ gradation(rule, color)
 
 	&__play
 		background url(images/play.svg) no-repeat
+	&__pause
+		background url(images/pause.svg) no-repeat
 	&__stop
 		background url(images/stop.svg) no-repeat
-	&__play, &__stop
+	&__play, &__pause, &__stop
 		size 18px
 		background-size cover
 		display inline-block
 		margin 5px
+		&:hover
+			opacity .8
+		&:active
+			opacity .6
 
 	&__song-name
 		white-space no-wrap
