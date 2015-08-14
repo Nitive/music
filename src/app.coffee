@@ -1,5 +1,6 @@
 React = require 'react'
 Dropzone = require 'react-dropzone'
+ID3 = require 'id3-parser'
 
 
 window.AudioContext = window.AudioContext or window.webkitAudioContext
@@ -117,8 +118,16 @@ MusicPlayer = React.createClass
 
 	getFile: (file) ->
 		audioFile.src = file.preview
-		@setState songName: file.name
 		@play null, null, yes
+		ID3.parse file
+			.then ((tags) ->
+				songName = switch
+					when tags and tags.band and tags.title   then "#{tags.band} - #{tags.title}"
+					when tags and tags.artist and tags.title then "#{tags.artist} - #{tags.title}"
+					when tags and tags.title                 then tags.title
+					else                                          file.name
+				@setState songName: songName
+			).bind this
 
 	play: (e, id, force = no) ->
 		if audioFile.duration or force
