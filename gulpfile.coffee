@@ -1,4 +1,5 @@
 gulp = require 'gulp'
+colors = require 'colors'
 
 # css
 stylus = require 'gulp-stylus'
