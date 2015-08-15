@@ -63,6 +63,7 @@ gulp.task 'stylus', ->
 
 gulp.task 'browser-sync', ->
 	sync.init
+		open: false
 		server:
 			baseDir: paths.dest
 

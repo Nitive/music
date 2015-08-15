@@ -44,23 +44,26 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 .visualization
 	position relative
 	height visualization_height
-	background #09131d url(http://i.ytimg.com/vi/r40giRjA_yY/maxresdefault.jpg) center no-repeat
-	background-size cover
 
 	&__line
-		absolute bottom
+		cursor pointer
+		absolute bottom -2px
 		height 30px
 		border-bottom 2px solid #50e3c2
-		transition width fast
+		&:after
+			content ''
+			height 30px
+			width player_width
+			display inline-block
 
 	&__select
 		cursor pointer
 		size 100%
-		background alpha(#09131d, .95)
+		background alpha(#09131d, .7)
 		opacity 0
 		transition opacity fast
 		text-align center
-		&:hover
+		&:not(.active):hover
 			opacity 1
 			.visualization__file-btn
 				opacity 1
@@ -87,7 +90,7 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 	&__file-btn
 		margin-top 82px
 		display inline-block
-		padding 10px 15px 8px
+		padding 8px 15px
 		transition opacity fast
 		opacity 0
 
@@ -106,6 +109,12 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 			text-align center
 			font-size .8em
 			color shade(#87aacb, 40%)
+
+#vcanvas
+	absolute top
+	z-index -1
+	border-radius 5px 5px 0 0
+	background #09131d
 
 
 

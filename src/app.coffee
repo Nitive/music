@@ -15,7 +15,8 @@ FileZone = React.createClass
 	render: ->
 		<Dropzone className = 'visualization__select'
 				onDrop = @onDrop
-				multiple = no>
+				multiple = no
+			>
 			<audio id = 'audioFile' />
 			<span className = 'visualization__file-btn'>Choose file</span>
 			<div className = 'visualization__outline'>Drop file to here</div>
@@ -25,6 +26,7 @@ Visualization = React.createClass
 
 	render: ->
 		<div className = 'visualization'>
+			<canvas height = 200 width = 500 id = 'vcanvas' />
 			<FileZone
 				play = @props.play
 				getFile = @props.getFile
@@ -95,7 +97,7 @@ MusicPlayer = React.createClass
 		filter.frequency.value = frequency
 		filter.Q.value = 1
 		filter.gain.value = 0
-		return filter
+		filter
 
 	createFilters: ->
 		frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000]
@@ -103,7 +105,7 @@ MusicPlayer = React.createClass
 		filters.reduce (prev, curr) ->
 			prev.connect curr
 			return curr
-		return filters
+		filters
 
 	setFilters: (gains, e) ->
 		@filters.map (filter, i) ->
@@ -148,7 +150,7 @@ MusicPlayer = React.createClass
 		do @updateProgress
 
 	startTimer: ->
-		@timer = setInterval @updateProgress, 100
+		@timer = setInterval @updateProgress, 50
 	clearTimer: ->
 		clearInterval @timer
 
@@ -162,11 +164,47 @@ MusicPlayer = React.createClass
 				do @clearTimer
 			@setState completed: audioFile.currentTime / audioFile.duration * 100
 
-	componentDidMount: ->
+	drawSpectrum: ->
+		array = new Uint8Array @analyser.frequencyBinCount
+		@analyser.getByteFrequencyData array
+
+		if vcanvas and vcanvas.getContext
+			@canvasCtx ||= vcanvas.getContext '2d'
+			@canvasCtx.clearRect 0, 0, 500, 200
+			gradient = @canvasCtx.createLinearGradient(0,0,0,170)
+			gradient.addColorStop  0, '#8f29d9'
+			gradient.addColorStop .5, '#39c8d9'
+			gradient.addColorStop  1, '#1f5fb9'
+			@canvasCtx.fillStyle = gradient
+			length = array.length
+
+			width = 6
+			between = .5
+			offset = 30
+			offsetTop = 100
+			item = (500 - width - offset * 2) / length - between
+			for value, i in array
+				if i % width is 0
+					@canvasCtx.fillRect offset + i * (item + between), 200 - value + offsetTop, item * width, value - offsetTop
+
+	connectSoundNodes: ->
+		@analyser = context.createAnalyser()
+		@analyser.smoothingTimeConstant = .3
+		@analyser.fftSize = 512
+
 		@source ||= @ctx.createMediaElementSource audioFile
 		[first, ..., last] = @filters = do @createFilters
 		@source.connect first
 		last.connect @ctx.destination
+
+		jsNode = @ctx.createScriptProcessor 2048, 1, 1
+		jsNode.onaudioprocess = @drawSpectrum
+		last.connect @analyser
+		@analyser.connect jsNode
+		jsNode.connect @ctx.destination
+
+	componentDidMount: ->
+		do @connectSoundNodes
 
 	render: ->
 		@ctx = @props.audioContext
