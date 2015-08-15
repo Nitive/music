@@ -24,6 +24,9 @@ FileZone = React.createClass
 
 Visualization = React.createClass
 
+	goto: (e) ->
+		@props.goto (e.clientX - e.target.getBoundingClientRect().left) / e.target.parentElement.offsetWidth
+
 	render: ->
 		<div className = 'visualization'>
 			<canvas height = 200 width = 500 id = 'vcanvas' />
@@ -31,7 +34,11 @@ Visualization = React.createClass
 				play = @props.play
 				getFile = @props.getFile
 				/>
-			<div className = 'visualization__line' style = {width: "#{@props.completed}%"} />
+			<div
+				className = 'visualization__line'
+				style = {width: "#{@props.completed}%"}
+				onClick = @goto
+			/>
 		</div>
 
 
@@ -149,6 +156,10 @@ MusicPlayer = React.createClass
 		do @clearTimer
 		do @updateProgress
 
+	goto: (to) ->
+		audioFile.currentTime = audioFile.duration * to
+		do @updateProgress
+
 	startTimer: ->
 		@timer = setInterval @updateProgress, 50
 	clearTimer: ->
@@ -165,25 +176,31 @@ MusicPlayer = React.createClass
 			@setState completed: audioFile.currentTime / audioFile.duration * 100
 
 	drawSpectrum: ->
-		array = new Uint8Array @analyser.frequencyBinCount
-		@analyser.getByteFrequencyData array
+		soundDataArray = new Uint8Array @analyser.frequencyBinCount
+		@analyser.getByteFrequencyData soundDataArray
+		for _, i in soundDataArray
+			soundDataArray[i] *= 200 / 256
+
+		# exclude safari
+		if not audioFile.duration or /^((?!chrome).)*safari/i.test navigator.userAgent
+			soundDataArray = [40, 41, 43, 45, 47, 49, 50, 51, 53, 58, 59, 59, 65, 67, 69, 67, 68, 69, 67, 69, 66, 70, 75, 76, 78, 80, 77, 81, 86, 87, 83, 85, 82, 86, 91, 92, 100, 102, 99, 103, 108, 109, 110, 112, 109, 113, 118, 119, 123, 125, 122, 126, 131, 132, 132, 134, 131, 135, 140, 141, 128, 130, 127, 131, 136, 137, 130, 132, 129, 133, 138, 139, 137, 139, 136, 140, 145, 146, 148, 150, 147, 151, 156, 157, 147, 149, 146, 150, 155, 156, 152, 154, 151, 155, 160, 161, 159, 161, 158, 162, 167, 168, 163, 165, 162, 166, 171, 172, 162, 164, 161, 165, 170, 171, 174, 176, 173, 177, 182, 183, 177, 179, 176, 180, 185, 186, 195, 197, 194, 198, 203, 204, 192, 194, 191, 195, 200, 201, 187, 189, 186, 190, 195, 196, 189, 191, 188, 192, 197, 198, 182, 184, 181, 185, 190, 191, 178, 180, 177, 181, 186, 187, 174, 176, 173, 177, 182, 183, 171, 173, 170, 174, 179, 180, 161, 163, 160, 164, 169, 170, 153, 155, 152, 156, 161, 162, 141, 143, 140, 144, 149, 150, 118, 120, 117, 121, 126, 127, 87, 89, 86, 90, 95, 96, 82, 84, 81, 85, 90, 91, 72, 74, 71, 75, 80, 81, 68, 70, 67, 71, 76, 77, 63, 65, 62, 66, 71, 72, 57, 59, 56, 60, 65, 66, 48, 50, 47, 51, 56, 57, 37, 39, 36, 40, 45, 46, 35, 37, 34, 38, 43, 44, 33, 35, 32, 36, 41]
 
 		if vcanvas and vcanvas.getContext
 			@canvasCtx ||= vcanvas.getContext '2d'
 			@canvasCtx.clearRect 0, 0, 500, 200
-			gradient = @canvasCtx.createLinearGradient(0,0,0,170)
-			gradient.addColorStop  0, '#8f29d9'
-			gradient.addColorStop .5, '#39c8d9'
+			gradient = @canvasCtx.createLinearGradient 0, 0, 0, 170
+			gradient.addColorStop  .4, '#8f29d9'
+			gradient.addColorStop .7, '#39c8d9'
 			gradient.addColorStop  1, '#1f5fb9'
 			@canvasCtx.fillStyle = gradient
-			length = array.length
+			length = soundDataArray.length
 
-			width = 6
+			width = 4
 			between = .5
 			offset = 30
-			offsetTop = 100
+			offsetTop = 30
 			item = (500 - width - offset * 2) / length - between
-			for value, i in array
+			for value, i in soundDataArray
 				if i % width is 0
 					@canvasCtx.fillRect offset + i * (item + between), 200 - value + offsetTop, item * width, value - offsetTop
 
@@ -197,11 +214,12 @@ MusicPlayer = React.createClass
 		@source.connect first
 		last.connect @ctx.destination
 
-		jsNode = @ctx.createScriptProcessor 2048, 1, 1
-		jsNode.onaudioprocess = @drawSpectrum
+		jsNode = @ctx.createScriptProcessor(2048, 1, 1)
+		console.log jsNode
 		last.connect @analyser
 		@analyser.connect jsNode
 		jsNode.connect @ctx.destination
+		jsNode.onaudioprocess = @drawSpectrum
 
 	componentDidMount: ->
 		do @connectSoundNodes
@@ -214,6 +232,7 @@ MusicPlayer = React.createClass
 				play = @play
 				completed = @state.completed
 				getFile = @getFile
+				goto = @goto
 			/>
 			<ControlPanel
 				played = @state.played

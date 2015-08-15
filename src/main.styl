@@ -48,13 +48,14 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 	&__line
 		cursor pointer
 		absolute bottom -2px
-		height 30px
-		border-bottom 2px solid #50e3c2
+		height 2px
+		background #50e3c2
 		&:after
 			content ''
-			height 30px
-			width player_width
 			display inline-block
+			height 20px
+			margin-top (@height / -2)
+			width player_width
 
 	&__select
 		cursor pointer
@@ -108,6 +109,7 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 			pointer-events none
 			text-align center
 			font-size .8em
+			font-style italic
 			color shade(#87aacb, 40%)
 
 #vcanvas
