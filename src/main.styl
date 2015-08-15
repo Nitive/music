@@ -11,6 +11,7 @@ body
 	background #30485f
 	font-weight 300
 	font-size 14px
+	-webkit-font-smoothing subpixel-antialiased
 
 
 
@@ -35,7 +36,7 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 	overflow hidden
 	border-radius 5px
 	color #87aacb
-	box-shadow 0 0 15px alpha(#09131d, .5)
+	box-shadow 0 0 15px 1px alpha(#09131d, .9)
 	font-size .9em
 
 
@@ -60,7 +61,7 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 	&__select
 		cursor pointer
 		size 100%
-		background alpha(#09131d, .7)
+		background alpha(#09131d, .8)
 		opacity 0
 		transition opacity fast
 		text-align center
@@ -110,7 +111,9 @@ gradation(rule, color, dark = false, hover = 2%, active = 4%)
 			text-align center
 			font-size .8em
 			font-style italic
+			font-weight bolder
 			color shade(#87aacb, 40%)
+			text-shadow 0 0 10px black
 
 #vcanvas
 	absolute top
