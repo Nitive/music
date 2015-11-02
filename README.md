@@ -1,7 +1,6 @@
 music
 -----
 [Demo](http://nitive.github.io/music)  
-_Визуализация не работает в Safari_
 
 Сборка:
 
