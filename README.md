@@ -1,5 +1,7 @@
 music
 -----
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Nitive/music.svg)](https://greenkeeper.io/)
 [Demo](http://nitive.github.io/music)  
 
 Сборка:
